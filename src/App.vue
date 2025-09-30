@@ -1,35 +1,72 @@
 <template>
-  <header>
-    <nav>
-      <div v-if="isAuthenticated && user">
-        Welcome, {{ user.name }}
-        <button @click="logout">Logout</button>
+  <Menubar :model="items">
+    <template #start>
+      <span>
+        <img src="@/assets/logo.svg" width="70" alt="My svg Icon"/>
+      </span>
+    </template>
+
+    <template #item="{ item }">
+      <router-link v-if="item.route" :to="item.route" class="flex items-center gap-2 p-2 rounded-lg">
+        <span :class="item.icon"/>
+        <span class="ml-1">{{ item.label }}</span>
+      </router-link>
+    </template>
+
+    <template #end>
+      <div class="flex items-center gap-2">
+        <div v-if="isAuthenticated && user">
+          <span class="pi pi-fw pi-user mr-4"/> {{ user.name }}
+          <PrimeButton @click="logout" class="ml-4">Выйти</PrimeButton>
+        </div>
+        <div v-else>
+          <form @submit.prevent="login">
+            <InputText v-model="email" type="email" id="email" required placeholder="Логин" class="m-2 sm:w-auto"
+              :class="{'p-invalid': authError}"/>
+            <InputText v-model="password" type="password" id="password" required placeholder="Пароль"
+              class="m-2 sm:w-auto" :class="{'p-invalid': authError}"/>
+            <PrimeButton type="submit">Войти</PrimeButton>
+            <div class="ml-2"><small v-if="authError" class="error">{{authError}}</small></div>
+          </form>
+        </div>
       </div>
-      <div v-else>
-        <form @submit.prevent="login">
-          <div>
-            <label for="email">Email: </label>
-            <input v-model="email" type="email" id="email" required/>
-          </div>
-          <div>
-            <label for="password">Password: </label>
-            <input v-model="password" type="password" id="password" required />
-          </div>
-          <button type="submit">Login</button>
-          <p v-if="authError" class="error">{{ authError }}</p>
-        </form>
-      </div>
-    </nav>
-  </header>
+
+    </template>
+  </Menubar>
+  <router-view/>
 </template>
+
 <script>
 import { useAuthStore } from '@/stores/authStore.js';
+import Button from "primevue/button";
+import Menubar from "primevue/menubar";
+import InputText from "primevue/inputtext";
+
 export default {
+  components: {PrimeButton: Button, Menubar, InputText},
   data(){
     return {
       email: '',
       password: '',
       authStore: useAuthStore(),
+      items: [
+        {
+          label: 'Главная страница',
+          icon: 'pi pi-fw pi-home',
+          route: '/',
+          shortcut: 'Ctrl + H',
+        },
+        {
+          label: 'Категории',
+          icon: 'pi pi-fw pi-folder',
+          route: '/categories',
+        },
+        {
+          label: 'Рецепты',
+          icon: 'pi pi-fw pi-list',
+          route: '/recipes',
+        },
+      ],
     };
   },
   computed: {
@@ -64,6 +101,12 @@ export default {
 <style scoped>
 .error {
   color: red;
+}
+
+:deep(.p-menubar-root-list) {
+  display: flex; /* на всякий случай */
+  gap: 50px;
+  margin-left: 40px;
 }
 </style>
 

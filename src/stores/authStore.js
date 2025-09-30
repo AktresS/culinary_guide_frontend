@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia';
 import axios from 'axios';
-
 export const useAuthStore = defineStore('auth',{
     state: () => ({
       user: null,
@@ -32,10 +31,12 @@ export const useAuthStore = defineStore('auth',{
             async getUser(){
                 this.errorMessage = "";
                 try{
-                    const response = await axios.get('http://localhost:8080/api/user',
-                        { headers: {
+                    const response = await axios.get('http://localhost:8000/api/user',
+                      {
+                        headers: {
                             Authorization: 'Bearer ' + this.token
-                        }});
+                        }
+                      });
                     this.user = response.data;
                 } catch (error){
                     if (error.response){
@@ -57,5 +58,10 @@ export const useAuthStore = defineStore('auth',{
             }
     }
 })
+
+
+
+
+
 
 
