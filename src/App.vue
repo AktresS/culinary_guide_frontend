@@ -5,14 +5,12 @@
         <img src="@/assets/logo.svg" width="70" alt="My svg Icon"/>
       </span>
     </template>
-
     <template #item="{ item }">
       <router-link v-if="item.route" :to="item.route" class="flex items-center gap-2 p-2 rounded-lg">
         <span :class="item.icon"/>
         <span class="ml-1">{{ item.label }}</span>
       </router-link>
     </template>
-
     <template #end>
       <div class="flex items-center gap-2">
         <div v-if="isAuthenticated && user">
@@ -30,7 +28,6 @@
           </form>
         </div>
       </div>
-
     </template>
   </Menubar>
   <router-view/>
@@ -41,6 +38,7 @@ import { useAuthStore } from '@/stores/authStore.js';
 import Button from "primevue/button";
 import Menubar from "primevue/menubar";
 import InputText from "primevue/inputtext";
+
 
 export default {
   components: {PrimeButton: Button, Menubar, InputText},

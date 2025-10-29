@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router';
 import Home from '@/components/Home.vue';
 import Categories from '@/components/Categories.vue';
 import Recipes from '@/components/Recipes.vue';
+import CreateDish from '@/components/CreateDish.vue';
 const routes = [
     {
         path: '/',
@@ -15,6 +16,10 @@ const routes = [
         path: '/recipes',
         component: Recipes,
     },
+    {
+      path: '/createDish',
+      component: CreateDish,
+    }
 ];
 
 const router = createRouter( {
